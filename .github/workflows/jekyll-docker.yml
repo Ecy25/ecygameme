@@ -7,37 +7,63 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    name: Build Kralligin Yukselisi APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp icon.svg www/
+          cp manifest.webmanifest www/
+          cp sw.js www/
 
       - name: Install dependencies
         run: npm install
 
-      - name: Add Android platform
+      - name: Install Capacitor Android
+        run: npm install @capacitor/android@^7
+
+      - name: Configure Capacitor
         run: |
-          npm install @capacitor/android@^7
-          npx cap add android
+          node -e "
+          const fs = require('fs');
+          const p = require('./capacitor.config.json');
+          p.webDir = 'www';
+          fs.writeFileSync('capacitor.config.json', JSON.stringify(p, null, 2));
+          "
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
           packages: platform-tools
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync Android
+        run: npx cap sync android
 
       - name: Build APK
         run: |
@@ -49,4 +75,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kralligin-yukselisi-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
