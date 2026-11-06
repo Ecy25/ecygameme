@@ -1,6 +1,7 @@
+
 {
   "appId": "com.kralligin.yukselisi",
   "appName": "Krallığın Yükselişi",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }
