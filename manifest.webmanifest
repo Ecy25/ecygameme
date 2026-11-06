@@ -1,0 +1,20 @@
+{
+  "id": "kralligin-yukselisi",
+  "name": "Krallığın Yükselişi",
+  "short_name": "Krallık",
+  "description": "Kendi krallığını kur, ordunu eğit ve vadinin hâkimi ol.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111b1a",
+  "theme_color": "#17251f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

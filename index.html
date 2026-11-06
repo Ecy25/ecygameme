@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#17251f">
+<meta name="description" content="Krallığını kur, ordunu eğit ve vadinin hâkimi ol.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Krallığın Yükselişi</title>
+<style>
+:root{--bg:#111b1a;--panel:#1d2b2b;--panel2:#293a37;--line:#43544a;--gold:#e9bd67;--gold2:#f5d995;--cream:#f5efdf;--muted:#aebbb0;--green:#7ec18b;--red:#d87968;--blue:#83b9d1;--safe:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--cream);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+body{padding-bottom:calc(76px + var(--safe));background:radial-gradient(ellipse at 50% -10%,#31443a 0,#111b1a 55%)}
+button{font:inherit;cursor:pointer;border:0}
+.top{position:sticky;top:0;z-index:20;padding:calc(9px + env(safe-area-inset-top,0px)) 13px 10px;background:#17251ff2;backdrop-filter:blur(14px);border-bottom:1px solid #52614c}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.brand{font-weight:950;letter-spacing:.08em;color:var(--gold2);font-size:15px;text-shadow:0 2px 12px #d7a74a33}
+.realm{font-size:10px;color:var(--muted);letter-spacing:.12em;margin-top:1px}
+.pill{border:1px solid #64745b;border-radius:99px;padding:6px 9px;color:var(--gold2);font-size:11px;background:#26362d}
+.resources{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.resource{background:#101a19;border:1px solid #3a4a41;border-radius:10px;padding:7px 5px;text-align:center;min-width:0}
+.resource .rname{font-size:10px;color:var(--muted)}.resource b{display:block;font-size:14px;color:var(--gold2);font-variant-numeric:tabular-nums}
+main{max-width:850px;margin:auto;padding:12px 11px 18px}
+.page{display:none}.page.active{display:block}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:5px 2px 10px;gap:8px}
+h2{font-size:16px;margin:0;font-weight:850}h3{font-size:14px;margin:0 0 6px}
+.eyebrow{font-size:10px;color:var(--gold);letter-spacing:.13em;font-weight:800}
+.card{background:linear-gradient(145deg,#263733,#1b2928);border:1px solid var(--line);border-radius:15px;padding:13px;box-shadow:0 8px 20px #0002;margin-bottom:11px}
+.hero{min-height:190px;border-radius:17px;overflow:hidden;position:relative;padding:17px;background:linear-gradient(120deg,#243e34dd,#172622ee),radial-gradient(circle at 75% 35%,#8ca85d,#243b31 65%);border:1px solid #647553;display:flex;flex-direction:column;justify-content:space-between}
+.hero:after{content:"🏰";position:absolute;right:8px;bottom:5px;font-size:104px;opacity:.34;filter:drop-shadow(0 8px 4px #0007)}
+.hero>*{position:relative;z-index:1}.hero h1{font-size:25px;line-height:1.05;margin:7px 0;color:#fff1ca;max-width:65%;text-shadow:0 3px 8px #0008}.hero p{font-size:12px;color:#d4dfd1;max-width:62%;margin:0}
+.herofoot{display:flex;gap:8px;align-items:center;margin-top:15px}
+.btn{border-radius:10px;padding:10px 12px;background:linear-gradient(#f4d68e,#d9a94e);color:#302819;font-size:12px;font-weight:900;box-shadow:0 3px 0 #8d672e}
+.btn:disabled{opacity:.42;filter:grayscale(.5);box-shadow:none}
+.btn.secondary{background:#354a43;color:#f5efdf;border:1px solid #607467;box-shadow:none}
+.btn.ghost{background:#263631;color:#e9d6a9;border:1px solid #607467;box-shadow:none}
+.btn.danger{background:#86483f;color:#fff;box-shadow:none}
+.gridbuild{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.build{position:relative;min-height:104px;border-radius:13px;border:1px solid #66765c;background:linear-gradient(150deg,#526b4e,#263d35 75%);color:var(--cream);padding:9px 5px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 0 #17251f}
+.build:active{transform:translateY(2px);box-shadow:0 2px 0 #17251f}
+.build.selected{outline:2px solid var(--gold);border-color:var(--gold)}
+.build .ico{font-size:29px;line-height:1.15;filter:drop-shadow(0 3px 2px #0006)}
+.build b{font-size:11px;margin-top:6px}.build small{font-size:9px;color:#d4d9c8;margin-top:3px}
+.leveltag{position:absolute;top:5px;right:6px;font-size:9px;color:#ffe4a0;background:#18251fbb;border-radius:8px;padding:2px 5px}
+.detail{display:grid;grid-template-columns:45px 1fr;gap:10px;align-items:center}.detail .big{font-size:35px;text-align:center}
+.muted{color:var(--muted);font-size:12px;line-height:1.5}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.row+.row{margin-top:8px}
+.cost{font-size:11px;color:#e7d5a8;line-height:1.7;margin:9px 0}
+.progress{height:7px;background:#101817;border-radius:20px;overflow:hidden;margin-top:6px}.progress i{height:100%;display:block;background:linear-gradient(90deg,#75b77f,#c7d88d);border-radius:20px}
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:#14211f;border:1px solid #394a41;border-radius:11px;padding:10px}.stat span{display:block;color:var(--muted);font-size:10px}.stat b{font-size:17px;color:var(--gold2)}
+.listitem{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #ffffff12}.listitem:last-child{border:0}
+.listitem .ico{font-size:26px;width:35px;text-align:center}.listitem .grow{flex:1;min-width:0}.listitem b{font-size:12px}.listitem small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.nav{position:fixed;z-index:30;bottom:0;left:0;right:0;padding:7px 8px calc(7px + var(--safe));display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:#14211ff5;border-top:1px solid #43564a;backdrop-filter:blur(12px)}
+.nav button{background:transparent;color:#aebbb0;border-radius:10px;padding:5px 2px;font-size:9px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button .ni{font-size:20px}.nav button.active{color:var(--gold2);background:#354333}
+.toast{position:fixed;z-index:50;left:50%;bottom:calc(84px + var(--safe));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f1d18b;color:#2b2418;padding:10px 15px;border-radius:12px;font-size:12px;font-weight:800;transition:.2s;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.map{min-height:360px;border-radius:15px;position:relative;overflow:hidden;border:1px solid #607451;background:radial-gradient(ellipse at 30% 25%,#8b9c61,#4e704c 45%,#344e3f 100%)}
+.map:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(32deg,transparent 0 35px,#d3d59a16 36px 38px),radial-gradient(ellipse at 70% 80%,#c1ad7044,transparent 35%)}
+.pin{position:absolute;z-index:1;border:1px solid #e8d6a0;background:#26352bdc;color:white;border-radius:12px;padding:8px 9px;text-align:center;font-size:10px;box-shadow:0 4px 10px #0005}
+.pin b{display:block;font-size:23px}.pin:active{outline:2px solid var(--gold)}
+.maplabel{position:absolute;z-index:1;color:#f5edc8;text-shadow:0 2px 4px #000;font-size:10px;font-weight:900;letter-spacing:.1em}
+.notice{background:#3b3425;border:1px solid #887044;border-radius:11px;padding:10px;color:#f4dca7;font-size:11px;line-height:1.5}
+input{background:#14211f;border:1px solid #53675a;color:white;border-radius:9px;padding:10px;width:100%;font:inherit}
+@media(min-width:650px){main{padding:20px}.hero{min-height:230px}.hero h1{font-size:32px}.gridbuild{gap:12px}.build{min-height:125px}.build .ico{font-size:36px}.build b{font-size:13px}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brandrow"><div><div class="brand">⚔ KRALLIĞIN YÜKSELİŞİ</div><div class="realm">YEŞİL VADİ · KRALLIK MERKEZİ</div></div><div class="pill" id="powerPill">⭐ Güç 120</div></div>
+ <div class="resources">
+  <div class="resource"><div class="rname">🪵 ODUN</div><b id="wood">500</b></div>
+  <div class="resource"><div class="rname">🪨 TAŞ</div><b id="stone">400</b></div>
+  <div class="resource"><div class="rname">🌾 YİYECEK</div><b id="food">600</b></div>
+  <div class="resource"><div class="rname">🪙 ALTIN</div><b id="gold">300</b></div>
+ </div>
+</header>
+<main>
+<section class="page active" id="page-city">
+ <div class="hero">
+  <div><div class="eyebrow">YENİ BİR ÇAĞ BAŞLIYOR</div><h1>Krallığını<br>inşa et.</h1><p>Vadinin kaderi senin ellerinde. Kaleni yükselt, halkını büyüt ve ordunu hazırla.</p></div>
+  <div class="herofoot"><button class="btn" onclick="showPage('buildings')">Şehri yönet →</button><span class="pill">Kale Sv. <b id="castleLevel">1</b></span></div>
+ </div>
+ <div class="sectionhead"><div><div class="eyebrow">BAŞKENT</div><h2>Şehir yerleşimi</h2></div><span class="muted">Bir binaya dokun</span></div>
+ <div class="gridbuild" id="cityGrid"></div>
+ <div class="card" id="selectedCard"></div>
+ <div class="sectionhead"><h2>Krallık özeti</h2></div>
+ <div class="statgrid" id="summaryStats"></div>
+</section>
+
+<section class="page" id="page-buildings">
+ <div class="sectionhead"><div><div class="eyebrow">İNŞAAT VE GELİŞİM</div><h2>Binaların</h2></div><span class="pill">Kale Sv. <b id="castleLevel2">1</b></span></div>
+ <div class="gridbuild" id="buildingGrid"></div><div class="card" id="buildingDetail"></div>
+ <div class="notice">İpucu: Kaynak binalarının seviyesini artırarak üretimini hızlandır. Geliştirmeler gerçek zamanlı sayaçla tamamlanır.</div>
+</section>
+
+<section class="page" id="page-army">
+ <div class="sectionhead"><div><div class="eyebrow">KRALİYET ORDUSU</div><h2>Birliklerin</h2></div><span class="pill" id="armyPower">Güç 0</span></div>
+ <div class="statgrid" id="armyStats"></div>
+ <div class="card"><h3>⚔ Birlik eğitimi</h3><p class="muted">Askerler için yiyecek ve altın gerekir. Kışla ve okçu ocağını geliştirerek daha güçlü birliklere hazırlan.</p><div id="trainingButtons"></div></div>
+ <div class="card"><h3>🦸 Kahramanlar</h3><div id="heroes"></div></div>
+</section>
+
+<section class="page" id="page-world">
+ <div class="sectionhead"><div><div class="eyebrow">KEŞİF VE SEFER</div><h2>Dünya haritası</h2></div><span class="pill">Yeşil Vadi</span></div>
+ <div class="map">
+  <div class="maplabel" style="left:8%;top:8%">KUZEY ORMANI</div>
+  <button class="pin" style="left:8%;top:24%" onclick="attack('wolf')"><b>🐺</b>Kurt Sürüsü<br>Kolay</button>
+  <button class="pin" style="left:61%;top:16%" onclick="attack('bandit')"><b>🏕️</b>Eşkıya Kampı<br>Orta</button>
+  <button class="pin" style="left:36%;top:57%" onclick="attack('ruins')"><b>🏚️</b>Eski Harabeler<br>Zor</button>
+  <button class="pin" style="right:6%;bottom:10%" onclick="attack('dragon')"><b>🐉</b>Ejderha Yuvası<br>Çok zor</button>
+  <div class="maplabel" style="left:8%;bottom:8%">BATI YOLU</div>
+  <div class="maplabel" style="right:8%;top:48%">KAYIP TOPRAKLAR</div>
+ </div>
+ <div class="card" style="margin-top:11px"><h3>🧭 Sefer bilgisi</h3><p class="muted">Haritadaki hedeflerden birini seç. Savaş gücün yeterliyse ödül kazanırsın. Birlik kaybı ihtimali vardır.</p><div id="lastBattle" class="muted">Henüz sefere çıkmadın.</div></div>
+</section>
+
+<section class="page" id="page-quests">
+ <div class="sectionhead"><div><div class="eyebrow">HÜKÜMDARIN GÜNLÜĞÜ</div><h2>Görevler</h2></div><span class="pill" id="questCount">0 tamamlandı</span></div>
+ <div class="card"><h3>📜 Ana görev zinciri</h3><div id="questList"></div></div>
+ <div class="card"><h3>🏆 Başarımlar</h3><div id="achievements"></div></div>
+</section>
+
+<section class="page" id="page-settings">
+ <div class="sectionhead"><div><div class="eyebrow">OYUN YÖNETİMİ</div><h2>Ayarlar</h2></div></div>
+ <div class="card"><h3>💾 Kayıt ve uygulama</h3><p class="muted">Oyun ilerlemen bu cihazın tarayıcısında saklanır. Tarayıcı verilerini silersen kayıt da silinebilir.</p><div class="row"><span class="muted">Son kayıt</span><b id="saveStatus">Otomatik</b></div><div class="row" style="margin-top:12px"><button class="btn secondary" onclick="exportSave()">Kaydı dışa aktar</button><button class="btn secondary" onclick="document.getElementById('importFile').click()">Kaydı içe aktar</button></div><input id="importFile" type="file" accept="application/json" hidden onchange="importSave(event)"></div>
+ <div class="card"><h3>📱 Ana ekrana ekle</h3><p class="muted" id="installHelp">Desteklenen tarayıcıda kurulum seçeneği burada görünecek. Android Chrome'da menüden “Uygulamayı yükle” veya “Ana ekrana ekle” seçebilirsin.</p><button class="btn" id="installBtn" hidden>Uygulamayı yükle</button></div>
+ <div class="card"><h3>🔧 Oyun ayarları</h3><p class="muted">Prototip sürümü 0.2 · Tek oyunculu yerel kayıt · Çevrimdışı üretim</p><button class="btn danger" onclick="resetGame()">Oyunu sıfırla</button></div>
+ <div class="notice">Bu sürüm özgün bir oyun prototipidir. Çevrim içi çok oyunculu sunucu ve mağaza/ödeme sistemleri henüz eklenmemiştir.</div>
+</section>
+</main>
+<nav class="nav">
+ <button class="active" data-page="city"><span class="ni">🏰</span>Şehir</button>
+ <button data-page="buildings"><span class="ni">🏗️</span>İnşaat</button>
+ <button data-page="army"><span class="ni">🛡️</span>Ordu</button>
+ <button data-page="world"><span class="ni">🗺️</span>Harita</button>
+ <button data-page="quests"><span class="ni">📜</span>Görev</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+const BUILDINGS={
+ castle:{name:"Kale",icon:"🏰",desc:"Krallığının kalbi. Her seviye yeni gelişimlerin kapısını açar.",cost:{wood:120,stone:100,gold:80},kind:"special"},
+ farm:{name:"Çiftlik",icon:"🌾",desc:"Her saniye yiyecek üretir.",cost:{wood:55,stone:20},rate:"food",base:2.5},
+ lumber:{name:"Kereste Kampı",icon:"🪓",desc:"Her saniye odun üretir.",cost:{wood:45,stone:25},rate:"wood",base:2},
+ quarry:{name:"Taş Ocağı",icon:"⛏️",desc:"Her saniye taş üretir.",cost:{wood:50,stone:30},rate:"stone",base:1.5},
+ barracks:{name:"Kışla",icon:"🛡️",desc:"Piyade birliklerinin eğitim merkezidir.",cost:{wood:90,stone:70,food:40}},
+ archery:{name:"Okçu Ocağı",icon:"🏹",desc:"Uzak menzilli okçuları eğitir.",cost:{wood:100,stone:60,food:50}},
+ hospital:{name:"Revir",icon:"⛑️",desc:"Yaralı askerlerin iyileşmesini sağlar.",cost:{wood:70,stone:80}},
+ market:{name:"Pazar",icon:"🏪",desc:"Kaynaklarını altın karşılığında takas et.",cost:{wood:80,stone:40}},
+ wall:{name:"Surlar",icon:"🧱",desc:"Şehrinin savunma gücünü artırır.",cost:{wood:90,stone:110}}
+};
+const DEFAULT={res:{wood:650,stone:520,food:800,gold:420},levels:{castle:1,farm:1,lumber:1,quarry:1,barracks:1,archery:1,hospital:1,market:1,wall:1},troops:{infantry:35,archer:15,cavalry:0},heroes:{arya:1,borin:1},quests:{upgrade:false,train:false,win:false},completed:0,selected:"castle",upgrading:null,lastTick:Date.now(),lastBattle:"Henüz sefere çıkmadın.",claimed:{},version:2};
+let S=load();
+function load(){try{let x=JSON.parse(localStorage.getItem("kry_save"));if(x&&x.version===2)return x}catch(e){}return structuredClone(DEFAULT)}
+function save(){S.lastTick=Date.now();localStorage.setItem("kry_save",JSON.stringify(S));document.getElementById("saveStatus").textContent=new Date().toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}
+const fmt=n=>Math.floor(n).toLocaleString("tr-TR");
+const icons={wood:"🪵",stone:"🪨",food:"🌾",gold:"🪙"};
+function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2100)}
+function totalPower(){return S.troops.infantry*2+S.troops.archer*3+S.troops.cavalry*5+S.levels.castle*35+S.heroes.arya*20+S.heroes.borin*18}
+function cost(id){let c=BUILDINGS[id].cost,lv=S.levels[id],o={};for(let k in c)o[k]=Math.floor(c[k]*Math.pow(1.48,lv-1));return o}
+function canPay(c){return Object.entries(c).every(([k,v])=>S.res[k]>=v)}
+function pay(c){for(let k in c)S.res[k]-=c[k]}
+function costHTML(c){return Object.entries(c).map(([k,v])=>`${icons[k]} ${fmt(v)}`).join("　")}
+function levelName(id){return "Sv. "+S.levels[id]}
+function buildingButton(id){let b=BUILDINGS[id];return `<button class="build ${S.selected===id?'selected':''}" onclick="selectBuilding('${id}')"><span class="leveltag">${levelName(id)}</span><span class="ico">${b.icon}</span><b>${b.name}</b><small>${b.rate?`+${(b.base*S.levels[id]).toFixed(1)}/sn`:b.kind==='special'?'Krallık merkezi':'Geliştirilebilir'}</small></button>`}
+function renderResources(){for(let k in S.res)document.getElementById(k).textContent=fmt(S.res[k]);document.getElementById("powerPill").textContent="⭐ Güç "+fmt(totalPower());document.getElementById("castleLevel").textContent=S.levels.castle;document.getElementById("castleLevel2").textContent=S.levels.castle}
+function renderCity(){document.getElementById("cityGrid").innerHTML=Object.keys(BUILDINGS).map(buildingButton).join("");document.getElementById("buildingGrid").innerHTML=Object.keys(BUILDINGS).map(buildingButton).join("");renderSelected();document.getElementById("summaryStats").innerHTML=`<div class="stat"><span>👥 Toplam asker</span><b>${fmt(Object.values(S.troops).reduce((a,b)=>a+b,0))}</b></div><div class="stat"><span>⭐ Krallık gücü</span><b>${fmt(totalPower())}</b></div><div class="stat"><span>🏰 Kale seviyesi</span><b>${S.levels.castle}</b></div><div class="stat"><span>📜 Tamamlanan görev</span><b>${S.completed}</b></div>`}
+function renderSelected(){let id=S.selected,b=BUILDINGS[id],c=cost(id),lv=S.levels[id],up=S.upgrading&&S.upgrading.id===id?S.upgrading:null;let content=`<div class="detail"><div class="big">${b.icon}</div><div><div class="eyebrow">BİNA BİLGİSİ</div><h3>${b.name} · Seviye ${lv}</h3><div class="muted">${b.desc}</div></div></div><div class="cost">Sonraki seviye maliyeti: ${costHTML(c)}</div>`;
+ if(up){let left=Math.max(0,Math.ceil((up.end-Date.now())/1000));content+=`<div class="muted">⏳ Geliştirme sürüyor: ${left} saniye</div><div class="progress"><i style="width:${Math.max(4,100-left/up.duration*100)}%"></i></div>`}
+ else content+=`<button class="btn" ${canPay(c)?'':'disabled'} onclick="upgrade('${id}')">⬆ ${lv+1}. seviyeye yükselt</button>`;
+ if(id==="market")content+=`<div style="margin-top:10px"><button class="btn secondary" onclick="trade()">🪙 100 odun → 60 altın</button></div>`;
+ document.getElementById("selectedCard").innerHTML=content;document.getElementById("buildingDetail").innerHTML=content}
+function selectBuilding(id){S.selected=id;renderCity();toast(BUILDINGS[id].name+" seçildi")}
+function upgrade(id){if(S.upgrading){toast("Önce devam eden geliştirme tamamlansın.");return}let c=cost(id);if(!canPay(c)){toast("Yeterli kaynağın yok.");return}if(id!=="castle"&&S.levels[id]>=S.levels.castle+1){toast("Önce kaleni geliştir.");return}pay(c);let duration= id==="castle"?20:Math.max(8,S.levels[id]*7);S.upgrading={id,end:Date.now()+duration*1000,duration:duration*1000};toast("İnşaat başladı: "+BUILDINGS[id].name);save();render()}
+function completeUpgrade(){if(!S.upgrading||Date.now()<S.upgrading.end)return;let id=S.upgrading.id;S.levels[id]++;S.upgrading=null;S.quests.upgrade=true;toast(BUILDINGS[id].name+" geliştirildi!");save();renderAll()}
+function train(type){let data={infantry:{cost:{food:100,gold:30},label:"Piyade",count:10},archer:{cost:{food:120,wood:50},label:"Okçu",count:10},cavalry:{cost:{food:180,gold:100},label:"Süvari",count:5}}[type];if(type==="infantry"&&S.levels.barracks<1||type==="archer"&&S.levels.archery<1){toast("Gerekli bina yok.");return}if(!canPay(data.cost)){toast("Yeterli kaynağın yok.");return}pay(data.cost);S.troops[type]+=data.count;S.quests.train=true;toast(data.count+" "+data.label+" birliğe katıldı.");save();renderAll()}
+function renderArmy(){let t=S.troops;document.getElementById("armyPower").textContent="Güç "+fmt(t.infantry*2+t.archer*3+t.cavalry*5);document.getElementById("armyStats").innerHTML=`<div class="stat"><span>🛡️ Piyade</span><b>${fmt(t.infantry)}</b></div><div class="stat"><span>🏹 Okçu</span><b>${fmt(t.archer)}</b></div><div class="stat"><span>🐎 Süvari</span><b>${fmt(t.cavalry)}</b></div><div class="stat"><span>⚔️ Savaş gücü</span><b>${fmt(totalPower())}</b></div>`;
+ document.getElementById("trainingButtons").innerHTML=`<div class="listitem"><span class="ico">🛡️</span><div class="grow"><b>10 Piyade</b><small>🌾 100 · 🪙 30</small></div><button class="btn" onclick="train('infantry')">Eğit</button></div><div class="listitem"><span class="ico">🏹</span><div class="grow"><b>10 Okçu</b><small>🌾 120 · 🪵 50</small></div><button class="btn" onclick="train('archer')">Eğit</button></div><div class="listitem"><span class="ico">🐎</span><div class="grow"><b>5 Süvari</b><small>🌾 180 · 🪙 100</small></div><button class="btn" onclick="train('cavalry')">Eğit</button></div>`;
+ document.getElementById("heroes").innerHTML=`<div class="listitem"><span class="ico">🗡️</span><div class="grow"><b>Arya · Öncü</b><small>Seviye ${S.heroes.arya} · Orduya +${S.heroes.arya*20} güç</small></div><button class="btn secondary" onclick="levelHero('arya')">Yükselt</button></div><div class="listitem"><span class="ico">🧙</span><div class="grow"><b>Borin · Bilge</b><small>Seviye ${S.heroes.borin} · Orduya +${S.heroes.borin*18} güç</small></div><button class="btn secondary" onclick="levelHero('borin')">Yükselt</button></div>`}
+function levelHero(id){let c={gold:100* S.heroes[id],food:120*S.heroes[id]};if(!canPay(c)){toast("Kahraman için yeterli kaynak yok.");return}pay(c);S.heroes[id]++;toast("Kahraman seviyesi yükseldi!");save();renderAll()}
+const ENEMIES={wolf:{name:"Kurt Sürüsü",power:95,reward:{food:180,gold:45},loss:.06},bandit:{name:"Eşkıya Kampı",power:220,reward:{wood:220,gold:100},loss:.12},ruins:{name:"Eski Harabeler",power:420,reward:{stone:300,gold:180},loss:.19},dragon:{name:"Ejderha Yuvası",power:850,reward:{gold:500,food:450},loss:.28}};
+function attack(id){let e=ENEMIES[id],p=totalPower();if(p<e.power){toast("Ordun bu düşman için henüz yeterince güçlü.");return}let win=p>=e.power*1.08;if(!win){toast("Sefer başarısız! Ordun geri çekildi.");let loss=Math.max(1,Math.floor(S.troops.infantry*.08));S.troops.infantry=Math.max(0,S.troops.infantry-loss);S.lastBattle=e.name+" karşısında geri çekildin. "+loss+" piyade kaybedildi."}else{for(let k in e.reward)S.res[k]+=e.reward[k];let loss=Math.max(0,Math.floor(S.troops.infantry*e.loss));S.troops.infantry=Math.max(0,S.troops.infantry-loss);S.quests.win=true;S.lastBattle=e.name+" yenildi! Ödül: "+Object.entries(e.reward).map(([k,v])=>icons[k]+" "+v).join(" · ")+". Kayıp: "+loss+" piyade.";toast("Zafer! Ödüller krallığa eklendi.")}document.getElementById("lastBattle").textContent=S.lastBattle;save();renderAll()}
+const QUESTS=[{id:"upgrade",name:"İlk adım",desc:"Herhangi bir binayı geliştir.",reward:{wood:120,stone:80}},{id:"train",name:"Bir ordu kur",desc:"Birliklerini eğit.",reward:{food:180,gold:60}},{id:"win",name:"İlk zafer",desc:"Dünya haritasında bir düşmanı yen.",reward:{gold:150,wood:100}}];
+function renderQuests(){document.getElementById("questCount").textContent=S.completed+" tamamlandı";document.getElementById("questList").innerHTML=QUESTS.map(q=>{let done=S.quests[q.id],claimed=S.claimed[q.id];return `<div class="listitem"><span class="ico">${done?'✅':'📜'}</span><div class="grow"><b>${q.name}</b><small>${q.desc} · Ödül ${costHTML(q.reward)}</small></div><button class="btn ${claimed?'secondary':''}" ${!done||claimed?'disabled':''} onclick="claimQuest('${q.id}')">${claimed?'Alındı':done?'Al':'Devam'}</button></div>`}).join("");let ach=[["🏰","Kale sahibi",S.levels.castle>=2],["⚔️","İlk ordu",S.troops.infantry>=50],["🗺️","Sefer zaferi",S.quests.win]];document.getElementById("achievements").innerHTML=ach.map(a=>`<div class="listitem"><span class="ico">${a[0]}</span><div class="grow"><b>${a[1]}</b><small>${a[2]?'Tamamlandı':'Henüz tamamlanmadı'}</small></div><b>${a[2]?'✓':'—'}</b></div>`).join("")}
+function claimQuest(id){let q=QUESTS.find(x=>x.id===id);if(!q||!S.quests[id]||S.claimed[id])return;for(let k in q.reward)S.res[k]+=q.reward[k];S.claimed[id]=true;S.completed++;toast("Görev ödülü alındı!");save();renderAll()}
+function trade(){if(S.res.wood<100){toast("100 odun gerekli.");return}S.res.wood-=100;S.res.gold+=60;toast("100 odun 60 altına çevrildi.");save();renderAll()}
+function tick(){let now=Date.now(),dt=Math.min(3600,(now-S.lastTick)/1000);for(let id in BUILDINGS){let b=BUILDINGS[id];if(b.rate)S.res[b.rate]+=b.base*S.levels[id]*dt}S.lastTick=now;completeUpgrade();renderResources();renderSelected();save()}
+function renderAll(){renderResources();renderCity();renderArmy();renderQuests();document.getElementById("lastBattle").textContent=S.lastBattle;save()}
+function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));if(name==="settings"){}window.scrollTo(0,0)}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function exportSave(){let blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kralligin-yukselisi-kayit.json";a.click();URL.revokeObjectURL(a.href);toast("Kayıt dosyası hazırlandı.")}
+function importSave(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.version!==2)throw 0;S=x;save();renderAll();toast("Kayıt yüklendi.")}catch(_){toast("Geçersiz kayıt dosyası.")}};r.readAsText(f)}
+function resetGame(){if(confirm("Tüm ilerlemen silinsin ve oyun baştan başlasın mı?")){localStorage.removeItem("kry_save");S=structuredClone(DEFAULT);renderAll();toast("Yeni krallığın kuruldu.")}}
+let deferredInstall=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;let b=document.getElementById("installBtn");b.hidden=false;b.onclick=async()=>{deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;b.hidden=true}});
+if("serviceWorker" in navigator && location.protocol!=="file:"){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+let offline=Math.max(0,Math.min(8*3600,(Date.now()-(S.lastTick||Date.now()))/1000));for(let id in BUILDINGS){let b=BUILDINGS[id];if(b.rate)S.res[b.rate]+=b.base*S.levels[id]*offline}
+S.lastTick=Date.now();renderAll();setInterval(tick,1000);
+</script>
+</body></html>
