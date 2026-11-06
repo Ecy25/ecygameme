@@ -1,5 +1,5 @@
 
-name: Build Android APK
+name: Build Kralligin Yukselisi APK
 
 on:
   workflow_dispatch:
@@ -12,65 +12,91 @@ permissions:
 
 jobs:
   build:
-    name: Build Kralligin Yukselisi APK
+    name: Android APK Build
     runs-on: ubuntu-latest
 
     steps:
+      # 1. GitHub dosyalarını indir
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Node.js kur
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
 
+      # 3. Java 17 kur
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
+      # 4. Android SDK kur
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      # 5. Web klasörünü hazırla
       - name: Prepare web files
         run: |
           mkdir -p www
+
           cp index.html www/
-          cp icon.svg www/
-          cp manifest.webmanifest www/
-          cp sw.js www/
 
+          if [ -f icon.svg ]; then
+            cp icon.svg www/
+          fi
+
+          if [ -f manifest.webmanifest ]; then
+            cp manifest.webmanifest www/
+          fi
+
+          if [ -f sw.js ]; then
+            cp sw.js www/
+          fi
+
+          echo "Web files prepared successfully"
+
+      # 6. Capacitor bağımlılıklarını yükle
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install @capacitor/core@^7 @capacitor/cli@^7 @capacitor/android@^7
 
-      - name: Install Capacitor Android
-        run: npm install @capacitor/android@^7
-
+      # 7. Capacitor yapılandırmasını düzelt
       - name: Configure Capacitor
         run: |
           node -e "
           const fs = require('fs');
           const p = require('./capacitor.config.json');
           p.webDir = 'www';
-          fs.writeFileSync('capacitor.config.json', JSON.stringify(p, null, 2));
+          p.appId = 'com.kralligin.yukselisi';
+          p.appName = 'Kralligin Yukselisi';
+          fs.writeFileSync(
+            'capacitor.config.json',
+            JSON.stringify(p, null, 2)
+          );
           "
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: platform-tools
-
+      # 8. Android projesini oluştur
       - name: Add Android platform
         run: npx cap add android
 
+      # 9. Web dosyalarını Android'e aktar
       - name: Sync Android
         run: npx cap sync android
 
+      # 10. APK derle
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
+      # 11. APK dosyasını yükle
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
