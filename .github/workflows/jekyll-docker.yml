@@ -4,7 +4,8 @@ name: Build Android APK
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,19 +21,32 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add Android platform
+        run: |
+          npm install @capacitor/android@^7
+          npx cap add android
+
       - name: Set up Android SDK
-       - name: Set up Android SDK
-  uses: android-actions/setup-android@v4
-  with:
-    packages: platform-tools
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: Build APK
         run: |
-          chmod +x ./gradlew
+          cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: kralligin-yukselisi-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/debug/*.apk
